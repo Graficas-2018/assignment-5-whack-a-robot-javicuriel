@@ -27,55 +27,10 @@ var mouse = new THREE.Vector2(), INTERSECTED, CLICKED;
 var renderer = null;
 var raycaster = null;
 var score = null;
-var time = null;
+var time = 0;
 var game_started = false;
 
-function modifyScore(mod){
-  score += mod;
-  $("#score").html(score);
-}
 
-
-function startDeadAnimation(object) {
-  animator = new KF.KeyFrameAnimator;
-  animator.init({
-      interps:
-          [
-              {
-                  keys:[0, 1],
-                  values:[
-                          { x : 0, y:0, z: 0 },
-                          { x : -1, y:0, z: 1 }
-                          ],
-                  target: object.rotation
-              }
-          ],
-      loop: false,
-      duration:duration*.8,
-  });
-  animator.start();
-}
-
-
-function createDeadAnimation(object) {
-  animator = new KF.KeyFrameAnimator;
-  animator.init({
-      interps:
-          [
-              {
-                  keys:[0, 1],
-                  values:[
-                          { x : 0, y:0, z: 0 },
-                          { x : -1, y:0, z: 1 }
-                          ],
-                  target: object.rotation
-              }
-          ],
-      loop: false,
-      duration:duration,
-  });
-  animator.stop();
-}
 
 class Robot {
   constructor(object) {
@@ -105,9 +60,6 @@ class Robot {
   resetPosition(){
     this.object.position.z = -90 - Math.random() * 50;
   }
-  // startPosition(){
-  //   this.object.position.z = -110;
-  // }
   kill(){
     // Attack and stop attacking for more realistic dead
     this.setState("attack");
@@ -125,14 +77,35 @@ class Robot {
       }, 4000);
 
     }, 500);
-
-    startDeadAnimation(this.object);
-
-
   }
-
 }
 
+
+function modifyScore(mod){
+  score += mod;
+  $("#score").html(score);
+}
+
+
+function startDeadAnimation(object) {
+  animator = new KF.KeyFrameAnimator;
+  animator.init({
+      interps:
+          [
+              {
+                  keys:[0, 1],
+                  values:[
+                          { x : 0, y:0, z: 0 },
+                          { x : -1, y:0, z: 1 }
+                          ],
+                  target: object.rotation
+              }
+          ],
+      loop: false,
+      duration:duration*.8,
+  });
+  animator.start();
+}
 
 
 function loadRobot(callback){
@@ -148,7 +121,6 @@ function loadRobot(callback){
             }
         } );
         robot_idle = object;
-        createDeadAnimation(robot_idle);
         loader.load( '../models/Robot/robot_atk.fbx', function ( object ){
             robot_idle.animations.push(object.animations[ 0 ]);
             loader.load( '../models/Robot/robot_run.fbx', function ( object ){
@@ -274,7 +246,6 @@ function run() {
 
         // Update the camera controller
         orbitControls.update();
-
 
 }
 
