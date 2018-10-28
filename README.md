@@ -11,3 +11,5 @@ Rubric:
 3. The user can interact correctly with the 3D model, and when an interaction happens, the *dead* animation is played. The model is then erased from the scene after a little while.
 4. A high score and timer are correctly implemented.
 5. UI feedback messages (to start or restart the game) are correctly displayed.
+
+**Grade: 105**
